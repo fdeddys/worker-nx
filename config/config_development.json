@@ -1,0 +1,91 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 2000,
+    "version": "1.0.0",
+    "resource_id": "nexcare",
+    "prefix_path": "nexcare"
+  },
+  "postgresql": {
+    "address": "user=postgres password=paramadaksa dbname=nexSOFT sslmode=disable host=localhost port=5432",
+    "param": "search_path='nx_worker'",
+    "max_open_connection": 500,
+    "max_idle_connection": 100
+  },
+  "postgresql_view": {
+    "address": "user=postgres password=paramadaksa dbname=nexSOFT sslmode=disable host=localhost port=5432",
+    "param": "search_path='resource_nexcare'",
+    "max_open_connection": 500,
+    "max_idle_connection": 100
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 0,
+    "password": "",
+    "timeout": 10000,
+    "request_volume_threshold": 1000,
+    "sleep_window": 500,
+    "error_percent_threshold": 5,
+    "max_concurrent_requests": 10
+  },
+  "client_credentials": {
+    "auth_user_id": 1,
+    "client_id": "123",
+    "client_secret": "123",
+    "secret_key": "123"
+  },
+  "log_file": [
+    "new_struct.log",
+    "stdout"
+  ],
+  "jwt_key": {
+    "jwt": "test",
+    "internal": "test"
+  },
+  "language_directory_path": "./src/nexsoft.co.id/nexcare/i18n",
+  "nexcare_frontend": {
+    "host": "www.testurl.com:123",
+    "path_redirect": {
+      "reset_password_path": "/v1/reset/password",
+      "verify_user_path": "/v1/user/verify"
+    }
+  },
+  "authentication_server": {
+    "host": "http://localhost:8098",
+    "path_redirect": {
+      "check_token": "/v1/roles/endpoints",
+      "authorize": "/v1/oauth/authorize",
+      "verify": "/v1/oauth/verify",
+      "token": "/v1/oauth/token",
+      "register_user": "/v1/internal/users",
+      "add_resource_client": "/v1/internal/admin/client/resource",
+      "logout": "/v1/logout"
+    }
+  },
+  "common_path": {
+    "resource_clients": "v1/common/clients/resource",
+    "resource_token": "v1/common/clients/token"
+  },
+  "audit": {
+    "is_active": true
+  },
+  "alert_server": {
+    "host": "http://localhost:8001",
+    "path_redirect": {
+      "alert": "/v1/alert"
+    }
+  },
+  "azure": {
+    "account_name": "nextest",
+    "account_key": "F5XCFVqeJ1dvICvFqNQl9JPYzV9wMPgxPBkq5iSbSJLyZFZS1cxiNw4COzhjfCI3mCyMHcb89kBaQGEnt3FAFQ==",
+    "host": "https://nextest.blob.jkt1.cbncloud.co.id",
+    "suffix": "/nextestdisk/assettag/"
+  },
+  "cdn": {
+    "root_path": "F:/upload"
+  },
+  "elastic_search": {
+    "connection_str": "http://localhost:9200"
+  }
+}
