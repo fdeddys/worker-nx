@@ -3,12 +3,14 @@ package TaskSyncService
 import (
 	"database/sql"
 	"fmt"
-
 	"nexsoft.co.id/tes-worker/constant"
 	"nexsoft.co.id/tes-worker/dao"
 	"nexsoft.co.id/tes-worker/model/backgroundJobModel"
 	"nexsoft.co.id/tes-worker/model/errorModel"
 	"nexsoft.co.id/tes-worker/repository"
+	"nexsoft.co.id/tes-worker/serverConfig"
+	"strconv"
+	"time"
 )
 
 // GetSyncElasticChildTask
@@ -48,7 +50,7 @@ func (input taskService) GetSyncChildResolutionTask() backgroundJobModel.ChildTa
 func (input taskService) syncTask(db *sql.DB, _ interface{}, childJob *repository.JobProcessModel) (err errorModel.ErrorModel) {
 	fmt.Println(" ==================")
 	fmt.Println("  TODO Assign  !!     ")
-	go assignTicket()
+	go assignTicket(5)
 	// Set status Done
 	fmt.Println(" ==================")
 	return
@@ -63,8 +65,44 @@ func (input taskService) resolutionTask(db *sql.DB, _ interface{}, childJob *rep
 	return
 }
 
-func assignTicket() {
+func assignTicket(waitingTime int) {
 	fmt.Println(" ----> Assign ticket")
+
+	db := serverConfig.ServerAttribute.DBConnection
+	tickets, err := dao.TicketDAO.GetUnassignedTickets(db)
+	if err.Error != nil {
+		print(err.Error.Error())
+		return
+	}
+
+	now := time.Now()
+	for _, ticket := range tickets {
+		times, _ := time.Parse(time.RFC3339, now.Format("2006-01-02T15:04:05Z"))
+		timeDifference := int(times.Sub(ticket.CreatedAt.Time).Minutes())
+
+		if timeDifference > waitingTime {
+			queue := repository.Queue{
+				TiketId:        sql.NullInt64{Int64: ticket.Id.Int64},
+				CreatedQueue:   sql.NullTime{Time: now},
+				QueueStatus:    sql.NullString{String: "ready"},
+				UpdatedClient:  sql.NullString{String: "3e3cb40e14d645eb8783f53a30c822d4"},
+				CreatedAt:      sql.NullTime{Time: now},
+				CreatedBy:      sql.NullInt64{Int64: 1},
+				UpdatedAt:      sql.NullTime{Time: now},
+				UpdatedBy:      sql.NullInt64{Int64: 1},
+			}
+
+			lastQueueId, err := dao.QueueDAO.InsertQueue(db, queue)
+			if err.Error != nil {
+				fmt.Println("-----> FAILED : Inserting ticket number " + strconv.Itoa(int(ticket.Id.Int64)))
+				continue
+			}
+
+			fmt.Println("-----> SUCCESS : Inserting ticket number " + strconv.Itoa(int(ticket.Id.Int64)) + " (QueueId : "+ strconv.Itoa(int(lastQueueId)) +")")
+		} else {
+			fmt.Println("-----> WAITING CS TO TAKE THE TICKET FOR "+ strconv.Itoa(waitingTime) +" MINUTES...")
+		}
+	}
 }
 
 func reAssignTicket() {

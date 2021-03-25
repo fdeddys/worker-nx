@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"os/signal"
-	"strconv"
-
 	"nexsoft.co.id/tes-worker/config"
 	"nexsoft.co.id/tes-worker/model/applicationModel"
 	"nexsoft.co.id/tes-worker/serverConfig"
 	"nexsoft.co.id/tes-worker/service/TaskSyncService"
 	"nexsoft.co.id/tes-worker/util"
+	"os"
+	"os/signal"
+	"strconv"
 
 	"github.com/gobuffalo/packr/v2"
 	"github.com/robfig/cron/v3"
@@ -30,7 +29,7 @@ func main() {
 	// dbMigration()
 
 	c := cron.New()
-	c.AddFunc("@every 10s", func() {
+	c.AddFunc("@every 5s", func() {
 		fmt.Println("----------------> start task")
 		// go taskScheduller.StartTaskScheduller()
 		TaskSyncService.TaskService.DoTaskService(applicationModel.ContextModel{})
