@@ -12,3 +12,4 @@ const JobProcessSyncTaskAssignTicket = JobProcessSynchronizeGroup + " " + JobPro
 const JobProcessSyncTaskResolutionTime = JobProcessSynchronizeGroup + " " + JobProcessResolutionTimeType + " Task scheduller"
 
 const UpdateLastUpdateTimeInMinute = 1
+const HourSeparator = ":"

@@ -32,11 +32,17 @@ func (input ticketDAO) GetUnassignedTickets(db *sql.DB) (tickets []repository.Ti
 		"	ticket.escalation_id, ticket.related_ticket_no," +
 		"	ticket.contact_id, ticket.created_at, " +
 		"	ticket.created_by, ticket.updated_at, " +
-		"	ticket.updated_by " +
+		"	ticket.updated_by, complaint_sub.cs_level, " +
+		"	remark.value " +
 		"FROM " + input.TableName + " " +
+		"LEFT JOIN complaint_sub " +
+		"	ON complaint_sub.id = ticket.complaint_id " +
+		"LEFT JOIN remark " +
+		"	ON complaint_sub.priority = remark.remark " +
 		"WHERE " +
-		"	ticket.status = 'unassigned' AND " +
-		"	ticket.deleted = FALSE"
+		"	ticket.status = 'unassign' AND " +
+		"	ticket.deleted = FALSE " +
+		"ORDER BY remark.value DESC, ticket.id ASC"
 
 	rows, dbError := db.Query(query)
 	if dbError != nil {
@@ -58,7 +64,8 @@ func (input ticketDAO) GetUnassignedTickets(db *sql.DB) (tickets []repository.Ti
 			&ticket.EscalationId, &ticket.RelatedTicketNo,
 			&ticket.ContactId, &ticket.CreatedAt,
 			&ticket.CreatedBy, &ticket.UpdatedAt,
-			&ticket.UpdatedBy)
+			&ticket.UpdatedBy, &ticket.CSLevel,
+			&ticket.Priority)
 
 		if dbError != nil {
 			err = errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)

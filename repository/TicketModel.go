@@ -7,6 +7,8 @@ type Ticket struct {
 	Tracker         sql.NullString
 	Program         sql.NullString
 	ComplaintId     sql.NullInt64
+	CSLevel         sql.NullString
+	Priority        sql.NullString
 	IssueDesc       sql.NullString
 	RootCauseId     sql.NullInt64
 	RootCauseDesc   sql.NullString

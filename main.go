@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
+	"github.com/robfig/cron/v3"
+	migrate "github.com/rubenv/sql-migrate"
 	"nexsoft.co.id/tes-worker/config"
 	"nexsoft.co.id/tes-worker/model/applicationModel"
 	"nexsoft.co.id/tes-worker/serverConfig"
@@ -10,10 +13,6 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
-
-	"github.com/gobuffalo/packr/v2"
-	"github.com/robfig/cron/v3"
-	migrate "github.com/rubenv/sql-migrate"
 	// _ "nexsoft.co.id/tes-worker/taskScheduller"
 )
 
