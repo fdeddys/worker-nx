@@ -78,4 +78,35 @@ func (input ticketDAO) GetUnassignedTickets(db *sql.DB) (tickets []repository.Ti
 	return
 }
 
+func (input ticketDAO) UpdateTicketStatus(db *sql.DB, ticket repository.Ticket) errorModel.ErrorModel {
+	funcName := "UpdateTicketStatus"
 
+	query := "UPDATE " + input.TableName + " " +
+			"SET " +
+			"	status = $1, " +
+			"	updated_at = $2, " +
+			"	updated_by = $3, " +
+			"	updated_client = $4 " +
+			"WHERE " +
+			"	id = $5 AND " +
+			"	deleted = FALSE"
+
+	stmt, dbError := db.Prepare(query)
+	if dbError != nil {
+		return errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)
+	}
+
+	params := []interface{}{
+		ticket.Status.String,
+		ticket.UpdatedAt.Time,
+		ticket.UpdatedBy.Int64,
+		ticket.UpdatedClient.String,
+		ticket.Id.Int64,
+	}
+	_, dbError = stmt.Exec(params...)
+	if dbError != nil {
+		return errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)
+	}
+
+	return errorModel.GenerateNonErrorModel()
+}
