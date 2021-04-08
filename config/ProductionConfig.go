@@ -17,7 +17,12 @@ type ProductionConfig struct {
 		MaxOpenConnection int    `json:"max_open_connection"`
 		MaxIdleConnection int    `json:"max_idle_connection"`
 	} `json:"postgresql"`
-
+	Email struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Address  string `json:"server_address"`
+		Secure   bool   `json:"secure"`
+	} `json:"email"`
 	LogFile []string `json:"log_file"`
 }
 
@@ -47,6 +52,18 @@ func (input ProductionConfig) GetPostgreSQLMaxOpenConnection() int {
 }
 func (input ProductionConfig) GetPostgreSQLMaxIdleConnection() int {
 	return input.Postgresql.MaxIdleConnection
+}
+func (input ProductionConfig) GetEmailUsername() string {
+	return input.Email.Username
+}
+func (input ProductionConfig) GetEmailPassword() string {
+	return input.Email.Password
+}
+func (input ProductionConfig) GetEmailAddress() string {
+	return input.Email.Address
+}
+func (input ProductionConfig) GetEmailSecure() bool {
+	return input.Email.Secure
 }
 
 func convertStringParamToInt(key string, value string) int {

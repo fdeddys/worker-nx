@@ -1,0 +1,98 @@
+# github.com/bytbox/go-pop3 v0.0.0-20120201222208-3046caf0763e
+## explicit
+github.com/bytbox/go-pop3
+# github.com/ghodss/yaml v1.0.0
+## explicit
+github.com/ghodss/yaml
+# github.com/gobuffalo/logger v1.0.3
+github.com/gobuffalo/logger
+# github.com/gobuffalo/packd v1.0.0
+github.com/gobuffalo/packd
+github.com/gobuffalo/packd/internal/takeon/github.com/markbates/errx
+# github.com/gobuffalo/packr/v2 v2.8.1
+## explicit
+github.com/gobuffalo/packr/v2
+github.com/gobuffalo/packr/v2/file
+github.com/gobuffalo/packr/v2/file/resolver
+github.com/gobuffalo/packr/v2/file/resolver/encoding/hex
+github.com/gobuffalo/packr/v2/jam/parser
+github.com/gobuffalo/packr/v2/plog
+# github.com/google/uuid v1.0.0
+## explicit
+github.com/google/uuid
+# github.com/jackc/pgx v3.6.2+incompatible
+## explicit
+github.com/jackc/pgx
+github.com/jackc/pgx/chunkreader
+github.com/jackc/pgx/internal/sanitize
+github.com/jackc/pgx/pgio
+github.com/jackc/pgx/pgproto3
+github.com/jackc/pgx/pgtype
+github.com/jackc/pgx/stdlib
+# github.com/karrick/godirwalk v1.15.8
+github.com/karrick/godirwalk
+# github.com/kelseyhightower/envconfig v1.4.0
+## explicit
+github.com/kelseyhightower/envconfig
+# github.com/konsorten/go-windows-terminal-sequences v1.0.2
+github.com/konsorten/go-windows-terminal-sequences
+# github.com/markbates/errx v1.1.0
+github.com/markbates/errx
+# github.com/markbates/oncer v1.0.0
+github.com/markbates/oncer
+# github.com/markbates/safe v1.0.1
+github.com/markbates/safe
+# github.com/pkg/errors v0.8.1
+github.com/pkg/errors
+# github.com/robfig/cron/v3 v3.0.0
+## explicit
+github.com/robfig/cron/v3
+# github.com/rubenv/sql-migrate v0.0.0-20210215143335-f84234893558
+## explicit
+github.com/rubenv/sql-migrate
+github.com/rubenv/sql-migrate/sqlparse
+# github.com/sirupsen/logrus v1.4.2
+github.com/sirupsen/logrus
+# github.com/tkanos/gonfig v0.0.0-20210106201359-53e13348de2f
+## explicit
+github.com/tkanos/gonfig
+# github.com/veqryn/go-email v0.0.0-20200124140746-a72ac14e358c
+## explicit
+github.com/veqryn/go-email/email
+# go.uber.org/atomic v1.6.0
+go.uber.org/atomic
+# go.uber.org/multierr v1.5.0
+go.uber.org/multierr
+# go.uber.org/zap v1.16.0
+## explicit
+go.uber.org/zap
+go.uber.org/zap/buffer
+go.uber.org/zap/internal/bufferpool
+go.uber.org/zap/internal/color
+go.uber.org/zap/internal/exit
+go.uber.org/zap/zapcore
+# golang.org/x/crypto v0.0.0-20191122220453-ac88ee75c92c
+golang.org/x/crypto/pbkdf2
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/sys v0.0.0-20191220142924-d4481acd189f
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/text v0.3.2
+golang.org/x/text/cases
+golang.org/x/text/internal
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/runes
+golang.org/x/text/secure/bidirule
+golang.org/x/text/secure/precis
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/width
+# gopkg.in/gorp.v1 v1.7.2
+gopkg.in/gorp.v1
+# gopkg.in/yaml.v2 v2.4.0
+## explicit
+gopkg.in/yaml.v2

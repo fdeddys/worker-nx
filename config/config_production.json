@@ -81,5 +81,11 @@
   },
   "cdn": {
     "root_path": "root/"
+  },
+  "email": {
+    "username": "fransiscus.syuhendra@nexsoft.co.id",
+    "password": "",
+    "server_address" : "mail.nexsoft.co.id:995",
+    "secure" :true
   }
 }

@@ -15,6 +15,12 @@ type DevelopmentConfig struct {
 		MaxOpenConnection int    `json:"max_open_connection"`
 		MaxIdleConnection int    `json:"max_idle_connection"`
 	} `json:"postgresql"`
+	Email struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Address  string `json:"server_address"`
+		Secure   bool   `json:"secure"`
+	} `json:"email"`
 }
 
 func (input DevelopmentConfig) GetServerHost() string {
@@ -43,4 +49,17 @@ func (input DevelopmentConfig) GetPostgreSQLMaxOpenConnection() int {
 }
 func (input DevelopmentConfig) GetPostgreSQLMaxIdleConnection() int {
 	return input.Postgresql.MaxIdleConnection
+}
+
+func (input DevelopmentConfig) GetEmailUsername() string {
+	return input.Email.Username
+}
+func (input DevelopmentConfig) GetEmailPassword() string {
+	return input.Email.Password
+}
+func (input DevelopmentConfig) GetEmailAddress() string {
+	return input.Email.Address
+}
+func (input DevelopmentConfig) GetEmailSecure() bool {
+	return input.Email.Secure
 }

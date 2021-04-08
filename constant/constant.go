@@ -7,8 +7,10 @@ const JobProcessOnProgressErrorStatus = "ONPROGRESS-ERROR"
 const JobProcessSynchronizeGroup = "Synchronize"
 const JobProcessAssignType = "Assign Ticket"
 const JobProcessResolutionTimeType = "ResolutionTIme"
+const JobProcessGetEmailType = "Get Email"
 
 const JobProcessSyncTaskAssignTicket = JobProcessSynchronizeGroup + " " + JobProcessAssignType + " Task scheduller"
 const JobProcessSyncTaskResolutionTime = JobProcessSynchronizeGroup + " " + JobProcessResolutionTimeType + " Task scheduller"
+const JobProcessSyncTaskGetEmail = JobProcessSynchronizeGroup + " " + JobProcessGetEmailType + " Task scheduller"
 
 const UpdateLastUpdateTimeInMinute = 1

@@ -27,8 +27,9 @@ func (input taskService) DoTaskService(contextModel applicationModel.ContextMode
 	var listTask []backgroundJobModel.ChildTask
 
 	fmt.Println("--> DoTaskService")
-	listTask = append(listTask, input.GetSyncChildTask())
-	listTask = append(listTask, input.GetSyncChildResolutionTask())
+	// listTask = append(listTask, input.GetSyncChildTask())
+	// listTask = append(listTask, input.GetSyncChildResolutionTask())
+	listTask = append(listTask, input.GetSyncChildGetEmailTask())
 
 	job := service.GetJobProcess(backgroundJobModel.ChildTask{
 		Group: constant.JobProcessSynchronizeGroup,

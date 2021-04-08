@@ -21,13 +21,17 @@ type Configuration interface {
 	GetPostgreSQLMaxOpenConnection() int
 	GetPostgreSQLMaxIdleConnection() int
 	GetLogFile() []string
+	GetEmailUsername() string
+	GetEmailPassword() string
+	GetEmailAddress() string
+	GetEmailSecure() bool
 }
 
 func GenerateConfiguration(arguments string) {
 	var err error
 	// WorkerCoreConfig
-	enviName := os.Getenv("NexCareConfiguration")
-	// enviName := os.Getenv("WorkerCoreConfig")
+	// enviName := os.Getenv("NexCareConfiguration")
+	enviName := os.Getenv("WorkerCoreConfig")
 	if arguments == "production" {
 		temp := ProductionConfig{}
 		err = gonfig.GetConf("config_production.json", &temp)

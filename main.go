@@ -13,7 +13,6 @@ import (
 	"nexsoft.co.id/tes-worker/util"
 
 	"github.com/gobuffalo/packr/v2"
-	"github.com/robfig/cron/v3"
 	migrate "github.com/rubenv/sql-migrate"
 	// _ "nexsoft.co.id/tes-worker/taskScheduller"
 )
@@ -29,13 +28,15 @@ func main() {
 	serverConfig.SetServerAttribute()
 	// dbMigration()
 
-	c := cron.New()
-	c.AddFunc("@every 10s", func() {
-		fmt.Println("----------------> start task")
-		// go taskScheduller.StartTaskScheduller()
-		TaskSyncService.TaskService.DoTaskService(applicationModel.ContextModel{})
-	})
-	go c.Start()
+	TaskSyncService.TaskService.DoTaskService(applicationModel.ContextModel{})
+
+	// c := cron.New()
+	// c.AddFunc("@every 60s", func() {
+	// 	fmt.Println("----------------> start task")
+	// 	// go taskScheduller.StartTaskScheduller()
+	// 	TaskSyncService.TaskService.DoTaskService(applicationModel.ContextModel{})
+	// })
+	// go c.Start()
 	// TaskSyncService.TaskService.DoTaskService(applicationModel.ContextModel{})
 	fmt.Println("Task Starting... ")
 	sig := make(chan os.Signal)
