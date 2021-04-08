@@ -48,8 +48,14 @@ func (input taskService) GetSyncChildResolutionTask() backgroundJobModel.ChildTa
 func (input taskService) syncTask(db *sql.DB, _ interface{}, childJob *repository.JobProcessModel) (err errorModel.ErrorModel) {
 	fmt.Println(" ==================")
 	fmt.Println("  TODO Assign  !!     ")
-	go AssignTicketTask.AssignTicket(db)
+	err = AssignTicketTask.AssignTicket(db)
+
 	// Set status Done
+	childJob.Status.String = constant.JobProcessDoneStatus
+	if err.Error != nil {
+		childJob.Status.String = constant.JobProcessErrorStatus
+	}
+	err = dao.JobProcessDAO.UpdateStatusJobProcess(db, *childJob)
 	fmt.Println(" ==================")
 	return
 }

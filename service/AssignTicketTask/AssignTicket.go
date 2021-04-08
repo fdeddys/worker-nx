@@ -14,12 +14,11 @@ import (
 	"time"
 )
 
-func AssignTicket(db *sql.DB) {
+func AssignTicket(db *sql.DB) (err errorModel.ErrorModel) {
 	fmt.Println(" ----> Assign ticket")
 
 	tickets, err := dao.TicketDAO.GetUnassignedTickets(db)
 	if err.Error != nil {
-		print(err.Error.Error())
 		return
 	}
 
@@ -28,19 +27,16 @@ func AssignTicket(db *sql.DB) {
 	}}
 	ticketWaitingTimeParameter, err := dao.AppParameterDAO.GetParameterByName(db, appParameter)
 	if err.Error != nil {
-		print(err.CausedBy.Error())
 		return
 	}
 
 	ticketWaitingTime, errConv := strconv.Atoi(ticketWaitingTimeParameter.Value.String)
 	if errConv != nil {
-		print(err.CausedBy.Error())
 		return
 	}
 
 	listAvailableCS, err := dao.UserCSDAO.GetAvailableCS(db)
 	if err.Error != nil {
-		print(err.CausedBy.Error())
 		return
 	}
 
@@ -49,8 +45,6 @@ func AssignTicket(db *sql.DB) {
 		// Check waiting time
 		times, _ := time.Parse(time.RFC3339, now.Format("2006-01-02T15:04:05Z"))
 		timeDifference := int(times.Sub(ticket.CreatedAt.Time).Minutes())
-		fmt.Println(times, ticket.CreatedAt.Time)
-		fmt.Println(timeDifference)
 
 		if timeDifference >= ticketWaitingTime {
 			queue := repository.Queue{
@@ -98,6 +92,7 @@ func AssignTicket(db *sql.DB) {
 			fmt.Println("-----> WAITING CS TO TAKE THE TICKET FOR " + strconv.Itoa(ticketWaitingTime) + " MINUTES...")
 		}
 	}
+	return
 }
 
 func findAvailableCS(listCS []repository.AvailableCS, ticket repository.Ticket, now time.Time) (index int, availableCS repository.AvailableCS, err error) {

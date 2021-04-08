@@ -112,7 +112,29 @@ func (input jobProcessDAO) UpdateErrorJobProcess(tx *sql.DB, userParam repositor
 
 	query := "UPDATE " + input.TableName + " SET status = $1, updated_at = $2 WHERE job_id = $3 "
 
-	param := []interface{}{constant.JobProcessErrorStatus, userParam.Status.String, userParam.UpdatedAt.Time, userParam.JobID.String}
+	param := []interface{}{userParam.Status.String, userParam.UpdatedAt.Time, userParam.JobID.String}
+
+	stmt, errorS := tx.Prepare(query)
+	if errorS != nil {
+		err = errorModel.GenerateInternalDBServerError(input.FileName, funcName, errorS)
+		return
+	}
+
+	_, errorS = stmt.Exec(param...)
+	if errorS != nil {
+		err = errorModel.GenerateInternalDBServerError(input.FileName, funcName, errorS)
+		return
+	}
+
+	return errorModel.GenerateNonErrorModel()
+}
+
+func (input jobProcessDAO) UpdateStatusJobProcess(tx *sql.DB, userParam repository.JobProcessModel) (err errorModel.ErrorModel) {
+	funcName := "UpdateStatusJobProcess"
+
+	query := "UPDATE " + input.TableName + " SET status = $1, updated_at = $2 WHERE job_id = $3 "
+
+	param := []interface{}{userParam.Status.String, userParam.UpdatedAt.Time, userParam.JobID.String}
 
 	stmt, errorS := tx.Prepare(query)
 	if errorS != nil {
