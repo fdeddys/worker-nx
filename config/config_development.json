@@ -8,7 +8,7 @@
   },
   "postgresql": {
     "address": "user=postgres password=paramadaksa dbname=nexSOFT sslmode=disable host=localhost port=5432",
-    "param": "search_path='nx_worker'",
+    "param": "search_path='resource_nexcare'",
     "max_open_connection": 500,
     "max_idle_connection": 100
   },
@@ -87,5 +87,11 @@
   },
   "elastic_search": {
     "connection_str": "http://localhost:9200"
+  },
+  "email": {
+    "username": "fransiscus.syuhendra@nexsoft.co.id",
+    "password": "",
+    "server_address" : "mail.nexsoft.co.id:995",
+    "secure" :true
   }
 }
