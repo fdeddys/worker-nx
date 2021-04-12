@@ -33,7 +33,7 @@ func (input ticketDAO) GetUnassignedTickets(db *sql.DB) (tickets []repository.Ti
 		"	ticket.contact_id, ticket.created_at, " +
 		"	ticket.created_by, ticket.updated_at, " +
 		"	ticket.updated_by, complaint_sub.cs_level, " +
-		"	remark.value " +
+		"	remark.value, ticket.room_type " +
 		"FROM " + input.TableName + " " +
 		"LEFT JOIN complaint_sub " +
 		"	ON complaint_sub.id = ticket.complaint_id " +
@@ -65,7 +65,7 @@ func (input ticketDAO) GetUnassignedTickets(db *sql.DB) (tickets []repository.Ti
 			&ticket.ContactId, &ticket.CreatedAt,
 			&ticket.CreatedBy, &ticket.UpdatedAt,
 			&ticket.UpdatedBy, &ticket.CSLevel,
-			&ticket.Priority)
+			&ticket.Priority, &ticket.RoomType)
 
 		if dbError != nil {
 			err = errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)
@@ -97,6 +97,41 @@ func (input ticketDAO) UpdateTicketStatus(db *sql.DB, ticket repository.Ticket) 
 	}
 
 	params := []interface{}{
+		ticket.Status.String,
+		ticket.UpdatedAt.Time,
+		ticket.UpdatedBy.Int64,
+		ticket.UpdatedClient.String,
+		ticket.Id.Int64,
+	}
+	_, dbError = stmt.Exec(params...)
+	if dbError != nil {
+		return errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)
+	}
+
+	return errorModel.GenerateNonErrorModel()
+}
+
+func (input ticketDAO) AssignTicket(db *sql.DB, ticket repository.Ticket) errorModel.ErrorModel {
+	funcName := "AssignTicket"
+
+	query := "UPDATE " + input.TableName + " " +
+		"SET " +
+		"	assignee_id = $1," +
+		"	status = $2, " +
+		"	updated_at = $3, " +
+		"	updated_by = $4, " +
+		"	updated_client = $5 " +
+		"WHERE " +
+		"	id = $6 AND " +
+		"	deleted = FALSE"
+
+	stmt, dbError := db.Prepare(query)
+	if dbError != nil {
+		return errorModel.GenerateInternalDBServerError(input.FileName, funcName, dbError)
+	}
+
+	params := []interface{}{
+		ticket.AssigneeId.Int64,
 		ticket.Status.String,
 		ticket.UpdatedAt.Time,
 		ticket.UpdatedBy.Int64,

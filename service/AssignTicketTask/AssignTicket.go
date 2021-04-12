@@ -70,15 +70,16 @@ func AssignTicket(db *sql.DB) (err errorModel.ErrorModel) {
 			if queue.StaffId.Int64 > 0 && csIndex > -1 {
 				listAvailableCS[csIndex].QueueAmount.Int64 += 1
 				listAvailableCS[csIndex].TicketId.Int64 = ticket.Id.Int64
+				ticket.AssigneeId.Int64 = queue.StaffId.Int64
 
 				// Insert to table queue
-				err = insertTicketToQueue(db, queue)
+				err = insertTicketToQueue(db, queue, listAvailableCS[csIndex].Level.String)
 				if err.Error != nil {
 					continue
 				}
 
 				// Update ticket status to 'assigned'
-				err = updateTicketStatus(db, ticket, now)
+				err = assignTicket(db, ticket, now)
 				if err.Error != nil {
 					continue
 				}
@@ -96,6 +97,10 @@ func AssignTicket(db *sql.DB) (err errorModel.ErrorModel) {
 }
 
 func findAvailableCS(listCS []repository.AvailableCS, ticket repository.Ticket, now time.Time) (index int, availableCS repository.AvailableCS, err error) {
+	// Escalation
+	if ticket.RoomType.String == "cslv2" {
+		ticket.CSLevel.String = "2"
+	}
 	for i, cs := range listCS {
 		// Check CS Level
 		if cs.Level.String != ticket.CSLevel.String {
@@ -121,7 +126,12 @@ func findAvailableCS(listCS []repository.AvailableCS, ticket repository.Ticket, 
 	return
 }
 
-func insertTicketToQueue(db *sql.DB, queue repository.Queue) (err errorModel.ErrorModel) {
+func insertTicketToQueue(db *sql.DB, queue repository.Queue, level string) (err errorModel.ErrorModel) {
+	if level == "1" {
+		queue.LevelId.Int64 = 1
+	} else if level == "2" {
+		queue.LevelId.Int64 = 2
+	}
 	lastQueueId, err := dao.QueueDAO.InsertQueue(db, queue)
 	if err.Error != nil {
 		fmt.Println("-----> FAILED : Inserting ticket number " + strconv.Itoa(int(queue.TiketId.Int64)))
@@ -132,12 +142,12 @@ func insertTicketToQueue(db *sql.DB, queue repository.Queue) (err errorModel.Err
 	return
 }
 
-func updateTicketStatus(db *sql.DB, ticket repository.Ticket, now time.Time) (err errorModel.ErrorModel) {
-	err = dao.TicketDAO.UpdateTicketStatus(db, repository.Ticket{
-		Id: ticket.Id,
-		Status: sql.NullString{String: "assigned"},
-		UpdatedAt: sql.NullTime{Time: now},
-		UpdatedBy: sql.NullInt64{Int64: 1},
+func assignTicket(db *sql.DB, ticket repository.Ticket, now time.Time) (err errorModel.ErrorModel) {
+	err = dao.TicketDAO.AssignTicket(db, repository.Ticket{
+		Id:            ticket.Id,
+		Status:        sql.NullString{String: "assigned"},
+		UpdatedAt:     sql.NullTime{Time: now},
+		UpdatedBy:     sql.NullInt64{Int64: 1},
 		UpdatedClient: sql.NullString{String: "3e3cb40e14d645eb8783f53a30c822d4"},
 	})
 

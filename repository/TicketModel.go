@@ -24,6 +24,7 @@ type Ticket struct {
 	ContactId       sql.NullInt64
 	TicketNo        sql.NullString
 	IsReassigned    sql.NullBool
+	RoomType        sql.NullString
 	UpdatedClient   sql.NullString
 	CreatedAt       sql.NullTime
 	CreatedBy       sql.NullInt64
